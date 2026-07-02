@@ -3,54 +3,84 @@ const asyncHandler = require("../middleware/asyncHandler");
 const { success } = require("../utils/response");
 const ApiError = require("../utils/ApiError");
 
-// GET ALL VENDORS
-exports.getVendors = asyncHandler(async (req, res) => {
+// GET ALL
+exports.getAll = asyncHandler(async (req, res) => {
 
-    const approved =
-        req.query.approved === "false"
-            ? false
-            : true;
+    const approved = req.query.approved;
 
-    const vendors = await vendorService.getVendors(approved);
+    const vendors = approved === "true"
+        ? await vendorService.getApproved()
+        : await vendorService.getAll();
 
-    return success(res, vendors, "Vendors retrieved successfully");
+    return success(
+        res,
+        vendors,
+        "Vendors loaded"
+    );
+
 });
 
-// GET SINGLE VENDOR
-exports.getVendor = asyncHandler(async (req, res) => {
+// GET ONE
+exports.getOne = asyncHandler(async (req, res) => {
 
-    const vendor = await vendorService.getVendor(req.params.id);
+    const vendor = await vendorService.getById(req.params.id);
 
     if (!vendor) {
         throw new ApiError(404, "Vendor not found");
     }
 
-    return success(res, vendor, "Vendor retrieved successfully");
-});
-
-// REGISTER
-exports.registerVendor = asyncHandler(async (req, res) => {
-
-    const vendor = await vendorService.registerVendor(req.body);
-
-    return success(res, vendor, "Vendor registration submitted", 201);
-});
-
-// UPDATE STATUS
-exports.updateVendorStatus = asyncHandler(async (req, res) => {
-
-    const vendor = await vendorService.updateVendorStatus(
-        req.params.id,
-        req.body.approved
+    return success(
+        res,
+        vendor,
+        "Vendor loaded"
     );
 
-    return success(res, vendor, "Vendor updated successfully");
+});
+
+// CREATE
+exports.create = asyncHandler(async (req, res) => {
+
+    const vendor = await vendorService.create({
+
+        ...req.body,
+
+        approved: false,
+
+        created_at: new Date().toISOString()
+
+    });
+
+    return success(
+        res,
+        vendor,
+        "Vendor created",
+        201
+    );
+
+});
+
+// APPROVE
+exports.approve = asyncHandler(async (req, res) => {
+
+    const vendor = await vendorService.approve(req.params.id);
+
+    return success(
+        res,
+        vendor,
+        "Vendor approved"
+    );
+
 });
 
 // DELETE
-exports.deleteVendor = asyncHandler(async (req, res) => {
+exports.remove = asyncHandler(async (req, res) => {
 
-    await vendorService.deleteVendor(req.params.id);
+    await vendorService.delete(req.params.id);
 
-    return success(res, null, "Vendor deleted successfully");
+    return success(
+        res,
+        null,
+        "Vendor deleted"
+    );
+
 });
