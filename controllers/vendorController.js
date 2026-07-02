@@ -84,3 +84,4 @@ exports.remove = asyncHandler(async (req, res) => {
     );
 
 });
+console.log(module.exports);
