@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kwehu Delivery — Malindi, Kenya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{--kw-orange:#E85D04;--kw-orange-light:#FF8C42;--kw-dark:#0D0D0D;--kw-green:#1D9E75;--kw-cream:#FFF8F2;--kw-gray:#F5F5F2}
+  body{font-family:'DM Sans',sans-serif;background:var(--kw-cream);color:var(--kw-dark)}
+  h1,h2,h3,h4{font-family:'Syne',sans-serif}
+
+  /* NAV */
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:16px 40px;background:#fff;border-bottom:1px solid #eee;position:sticky;top:0;z-index:100}
+  .nav-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;color:var(--kw-orange);cursor:pointer}
+  .nav-logo span{color:var(--kw-dark)}
+  .nav-tabs{display:flex;gap:4px;background:#f5f5f2;border-radius:10px;padding:4px}
+  .nav-tab{padding:7px 18px;border:none;background:transparent;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;color:#666;transition:all .2s}
+  .nav-tab.active{background:#fff;color:var(--kw-orange);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+  .nav-right{display:flex;align-items:center;gap:10px}
+  .nav-user{font-size:13px;color:#555;font-weight:500}
+  .nav-cta,.btn-primary{background:var(--kw-orange);color:#fff;border:none;padding:9px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer}
+  .btn-secondary{background:transparent;color:var(--kw-dark);border:1.5px solid #ddd;padding:9px 20px;border-radius:8px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:13px;cursor:pointer}
+  .btn-sm{padding:6px 14px;font-size:12px}
+  .btn-danger{background:#fef2f2;color:#a32d2d;border:none;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer}
+
+  .page{display:none}.page.active{display:block}
+  .toast{position:fixed;bottom:24px;right:24px;background:var(--kw-dark);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:opacity .3s;pointer-events:none}
+  .toast.show{opacity:1}
+  .loader{display:flex;align-items:center;justify-content:center;padding:48px;color:#888;font-size:14px}
+  .error-msg{background:#fef2f2;color:#a32d2d;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:12px}
+  .success-msg{background:#e8f7f2;color:#0f6e56;padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:12px}
+
+  /* MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:none;align-items:center;justify-content:center}
+  .modal-overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;padding:32px;width:360px;max-width:95vw}
+  .modal h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:6px}
+  .modal p{font-size:14px;color:#666;margin-bottom:20px}
+  .form-group{margin-bottom:16px}
+  .form-group label{display:block;font-size:13px;font-weight:500;margin-bottom:6px}
+  .form-group input,.form-group select{width:100%;border:1px solid #eee;border-radius:8px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;outline:none}
+  .form-group input:focus,.form-group select:focus{border-color:var(--kw-orange)}
+  .modal-btns{display:flex;gap:8px;margin-top:20px}
+  .modal-btns button{flex:1}
+
+  /* LANDING */
+  .hero{padding:80px 40px 60px;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;max-width:1100px;margin:0 auto}
+  .hero-badge{display:inline-flex;align-items:center;gap:6px;background:#fff3ec;color:var(--kw-orange);font-size:12px;font-weight:500;padding:6px 14px;border-radius:20px;margin-bottom:20px}
+  .hero h1{font-size:52px;font-weight:800;line-height:1.1;margin-bottom:16px}
+  .hero h1 em{color:var(--kw-orange);font-style:normal}
+  .hero > div > p{font-size:16px;color:#555;line-height:1.7;margin-bottom:32px}
+  .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+  .btn-lg{padding:14px 28px;font-size:15px}
+  .hero-visual{background:#fff;border-radius:20px;padding:24px;border:1px solid #eee}
+  .phone-mock{background:var(--kw-dark);border-radius:28px;padding:20px 16px;color:#fff;max-width:240px;margin:0 auto}
+  .phone-status{display:flex;justify-content:space-between;font-size:10px;opacity:.7;margin-bottom:16px}
+  .phone-header{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px}
+  .phone-sub{font-size:11px;opacity:.6;margin-bottom:16px}
+  .phone-search{background:#1e1e1e;border-radius:8px;padding:8px 12px;font-size:11px;color:#888;margin-bottom:16px}
+  .phone-cats{display:flex;gap:8px;margin-bottom:16px;overflow:hidden}
+  .phone-cat{background:#1e1e1e;border-radius:20px;padding:5px 12px;font-size:10px;white-space:nowrap}
+  .phone-cat.active-cat{background:var(--kw-orange);color:#fff}
+  .phone-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .phone-card{background:#1a1a1a;border-radius:10px;padding:10px}
+  .phone-card-icon{font-size:20px;margin-bottom:6px}
+  .phone-card-name{font-size:10px;font-weight:600}
+  .phone-card-meta{font-size:9px;opacity:.5;margin-top:2px}
+  .phone-card-price{font-size:10px;color:var(--kw-orange-light);margin-top:4px;font-weight:500}
+  .stats-strip{background:var(--kw-orange);color:#fff;padding:32px 40px;display:flex;justify-content:center;gap:80px}
+  .stat-item{text-align:center}
+  .stat-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800}
+  .stat-lbl{font-size:13px;opacity:.8;margin-top:2px}
+  .features{padding:70px 40px;max-width:1100px;margin:0 auto}
+  .section-label{font-size:12px;font-weight:500;color:var(--kw-orange);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .section-title{font-family:'Syne',sans-serif;font-size:34px;font-weight:700;margin-bottom:40px}
+  .features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .feature-card{background:#fff;border-radius:16px;padding:28px;border:1px solid #eee}
+  .feature-icon{width:44px;height:44px;border-radius:10px;background:#fff3ec;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:20px}
+  .feature-card h3{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;margin-bottom:8px}
+  .feature-card p{font-size:14px;color:#666;line-height:1.6}
+  .cta-section{background:var(--kw-dark);color:#fff;padding:80px 40px;text-align:center}
+  .cta-section h2{font-family:'Syne',sans-serif;font-size:40px;font-weight:800;margin-bottom:12px}
+  .cta-section p{font-size:16px;opacity:.7;margin-bottom:32px}
+  .cta-btns{display:flex;gap:12px;justify-content:center}
+  .btn-white{background:#fff;color:var(--kw-dark);border:none;padding:14px 28px;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;cursor:pointer}
+  .btn-outline-white{background:transparent;color:#fff;border:1.5px solid rgba(255,255,255,.3);padding:14px 28px;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:500;font-size:15px;cursor:pointer}
+  footer{background:#111;color:rgba(255,255,255,.5);text-align:center;padding:20px;font-size:13px}
+  footer strong{color:var(--kw-orange)}
+
+  /* CUSTOMER APP */
+  .app-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 57px)}
+  .app-sidebar{background:#fff;border-right:1px solid #eee;padding:24px 0}
+  .sidebar-profile{padding:0 20px 20px;border-bottom:1px solid #f0f0f0;margin-bottom:16px}
+  .sidebar-avatar{width:44px;height:44px;border-radius:50%;background:var(--kw-orange);color:#fff;font-family:'Syne',sans-serif;font-weight:700;font-size:16px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+  .sidebar-name{font-weight:500;font-size:14px}
+  .sidebar-loc{font-size:12px;color:#888;margin-top:2px}
+  .sidebar-menu{padding:0 12px}
+  .menu-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:14px;color:#555;cursor:pointer;margin-bottom:2px;transition:background .15s}
+  .menu-item:hover{background:#f5f5f2}
+  .menu-item.active{background:#fff3ec;color:var(--kw-orange);font-weight:500}
+  .app-main{padding:28px 32px;background:var(--kw-cream);overflow-y:auto}
+  .app-search-bar{display:flex;gap:12px;margin-bottom:20px}
+  .search-input-wrap{flex:1;background:#fff;border:1px solid #eee;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:8px}
+  .search-input-wrap input{border:none;outline:none;font-family:'DM Sans',sans-serif;font-size:14px;flex:1;background:transparent}
+  .cats-row{display:flex;gap:10px;margin-bottom:24px;overflow-x:auto;padding-bottom:4px}
+  .cat-chip{padding:8px 18px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid #eee;background:#fff;white-space:nowrap;color:#555;transition:all .15s}
+  .cat-chip.sel{background:var(--kw-orange);color:#fff;border-color:var(--kw-orange)}
+  .vendors-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;margin-bottom:36px}
+  .vendor-card{background:#fff;border-radius:14px;overflow:hidden;border:1px solid #eee;cursor:pointer;transition:transform .15s,box-shadow .15s}
+  .vendor-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08)}
+  .vendor-thumb{height:110px;display:flex;align-items:center;justify-content:center;font-size:40px}
+  .vendor-body{padding:14px}
+  .vendor-name{font-family:'Syne',sans-serif;font-weight:700;font-size:15px;margin-bottom:4px}
+  .vendor-meta{display:flex;gap:10px;font-size:12px;color:#888;flex-wrap:wrap}
+  .vendor-tag{display:inline-block;background:#f0f0f0;color:#555;font-size:11px;padding:3px 8px;border-radius:4px;margin-top:6px}
+  .section-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .section-hdr h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700}
+  .see-all{font-size:13px;color:var(--kw-orange);cursor:pointer}
+  .order-card{background:#fff;border-radius:12px;padding:16px;border:1px solid #eee;display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .order-icon{width:44px;height:44px;border-radius:10px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+  .order-info{flex:1}
+  .order-name{font-weight:500;font-size:14px;margin-bottom:3px}
+  .order-meta{font-size:12px;color:#888}
+  .order-status{font-size:12px;font-weight:500;padding:4px 10px;border-radius:20px;white-space:nowrap}
+  .status-delivered{background:#e8f7f2;color:#0f6e56}
+  .status-transit,.status-picked_up{background:#fff3ec;color:var(--kw-orange)}
+  .status-pending,.status-confirmed,.status-preparing,.status-ready_for_pickup{background:#f0f4ff;color:#185FA5}
+  .status-cancelled{background:#fef2f2;color:#a32d2d}
+  .track-banner{background:var(--kw-dark);color:#fff;border-radius:14px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;gap:16px}
+  .track-info h4{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px}
+  .track-info p{font-size:13px;opacity:.7}
+  .track-steps{display:flex;align-items:center;margin-top:10px;flex-wrap:wrap;gap:4px}
+  .track-step{display:flex;align-items:center;gap:5px;font-size:11px;opacity:.5}
+  .track-step.done{opacity:1;color:var(--kw-green)}
+  .track-step.current{opacity:1;color:var(--kw-orange-light)}
+  .track-dot{width:7px;height:7px;border-radius:50%;background:currentColor}
+  .track-line{width:18px;height:2px;background:rgba(255,255,255,.2);margin:0 2px}
+  .track-line.done{background:var(--kw-green)}
+  .track-btn{background:var(--kw-orange);color:#fff;border:none;padding:9px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap}
+  .cart-fab{position:fixed;bottom:28px;right:28px;background:var(--kw-orange);color:#fff;border:none;border-radius:50px;padding:12px 20px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;box-shadow:0 4px 16px rgba(232,93,4,.4);display:flex;align-items:center;gap:8px;z-index:50;transition:transform .15s}
+  .cart-fab:hover{transform:scale(1.04)}
+  .cart-count{background:#fff;color:var(--kw-orange);border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
+
+  /* CART PANEL */
+  .cart-panel{background:#fff;border-radius:16px;padding:24px;border:1px solid #eee;margin-bottom:20px}
+  .cart-panel h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:16px}
+  .cart-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f5}
+  .cart-item:last-of-type{border-bottom:none}
+  .cart-item-name{flex:1;font-size:14px;font-weight:500}
+  .cart-item-qty{display:flex;align-items:center;gap:8px;font-size:13px}
+  .qty-btn{width:26px;height:26px;border-radius:6px;border:1px solid #eee;background:#f9f9f9;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .cart-item-price{font-size:13px;font-weight:500;color:var(--kw-orange);min-width:64px;text-align:right}
+  .cart-total{display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:16px;border-top:1px solid #eee;font-weight:500}
+  .cart-total-amount{font-family:'Syne',sans-serif;font-size:18px;color:var(--kw-orange)}
+
+  /* ADMIN */
+  .admin-layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 57px)}
+  .admin-sidebar{background:var(--kw-dark);color:#fff;padding:24px 0}
+  .admin-sidebar-logo{padding:0 20px 20px;border-bottom:1px solid #222;margin-bottom:16px;font-family:'Syne',sans-serif;font-size:16px;font-weight:700}
+  .admin-sidebar-logo span{color:var(--kw-orange)}
+    .menu-icon{
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eef2ff;
+    border-radius:50%;
+    font-size:18px;
+}
+
+
+  .admin-menu{padding:0 12px}
+  .admin-menu-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;color:rgba(255,255,255,.5);cursor:pointer;margin-bottom:2px;transition:all .15s}
+  .admin-menu-item:hover{background:#1a1a1a;color:#fff}
+  .admin-menu-item.active{background:#1e1e1e;color:#fff;border-left:3px solid var(--kw-orange);padding-left:9px}
+  .admin-main{background:#f8f8f6;padding:28px 32px;overflow-y:auto}
+  .admin-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px}
+  .admin-topbar h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:700}
+  .admin-topbar-right{display:flex;gap:10px;align-items:center}
+  .admin-date{font-size:13px;color:#888}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px}
+  .metric{background:#fff;border-radius:12px;padding:20px;border:1px solid #eee}
+  .metric-label{font-size:12px;color:#888;margin-bottom:8px}
+  .metric-value{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;margin-bottom:4px}
+  .metric-change{font-size:12px;color:#888}
+  .admin-grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+  .admin-card{background:#fff;border-radius:12px;padding:20px;border:1px solid #eee}
+  .admin-card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+  .admin-card-hdr h4{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
+  .admin-card-hdr a{font-size:12px;color:var(--kw-orange);cursor:pointer}
+  .approval-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f5f5f5}
+  .approval-item:last-child{border-bottom:none}
+  .approval-avatar{width:36px;height:36px;border-radius:8px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+  .approval-info{flex:1}
+  .approval-name{font-size:13px;font-weight:500;margin-bottom:2px}
+  .approval-type{font-size:11px;color:#888}
+  .approval-btns{display:flex;gap:6px}
+  .btn-approve{background:#e8f7f2;color:#0f6e56;border:none;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer}
+  .btn-reject{background:#fef2f2;color:#a32d2d;border:none;padding:5px 10px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer}
+  .orders-table{width:100%;border-collapse:collapse}
+  .orders-table th{font-size:11px;color:#888;text-align:left;padding:8px 12px;border-bottom:1px solid #f0f0f0;font-weight:500}
+  .orders-table td{font-size:13px;padding:10px 12px;border-bottom:1px solid #f5f5f5}
+  .orders-table tr:last-child td{border-bottom:none}
+  .tbl-badge{font-size:11px;padding:3px 8px;border-radius:4px;font-weight:500}
+  .badge{
+    display:inline-block;
+    padding:5px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    color:#fff;
+}
+
+  .badge-delivered{background:#e8f7f2;color:#0f6e56}
+  .badge-transit,.badge-picked_up{background:#fff3ec;color:var(--kw-orange)}
+  .badge-pending,.badge-confirmed,.badge-preparing{background:#f0f4ff;color:#185FA5}
+  .badge-cancelled{background:#fef2f2;color:#a32d2d}
+  .rev-bars{display:flex;align-items:flex-end;gap:8px;height:130px}
+  .rev-col{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .rev-bar{width:100%;border-radius:4px 4px 0 0;background:#ddd}
+  .rev-bar.today{background:var(--kw-orange)}
+  .rev-label{font-size:10px;color:#888}
+  .rev-val{font-size:10px;color:#555;font-weight:500}
+  .empty-state{text-align:center;padding:40px 20px;color:#888;font-size:14px}
+</style>
+</head>
+<body>
+
+<!-- ── Toast notification ─────────────────────────────────────────────────── -->
+<div class="toast" id="toast"></div>
+
+<!-- ── Auth modal ─────────────────────────────────────────────────────────── -->
+<div class="modal-overlay" id="auth-modal">
+  <div class="modal">
+    <h3 id="auth-title">Sign in to Kwehu</h3>
+    <p id="auth-subtitle">Enter your phone number to receive an OTP</p>
+    <div id="auth-msg"></div>
+    <div id="otp-step-1">
+      <div class="form-group">
+        <label>Phone number</label>
+        <input id="auth-phone" type="tel" placeholder="+254712345678">
+      </div>
+      <div class="modal-btns">
+        <button class="btn-secondary" onclick="closeAuthModal()">Cancel</button>
+        <button class="btn-primary" onclick="sendOTP()">Send OTP</button>
+      </div>
+    </div>
+    <div id="otp-step-2" style="display:none">
+      <div class="form-group">
+        <label>Enter the OTP sent to <span id="otp-phone-label"></span></label>
+        <input id="auth-otp" type="text" placeholder="123457" maxlength="7">
+      </div>
+      <div class="modal-btns">
+        <button class="btn-secondary" onclick="document.getElementById('otp-step-1').style.display='block';document.getElementById('otp-step-2').style.display='none'">Back</button>
+        <button class="btn-primary" onclick="verifyOTP()">Verify & Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Nav ───────────────────────────────────────────────────────────────────── -->
+<nav class="nav">
+  <div class="nav-logo" onclick="showPage('landing')">Kwehu<span>Delivery</span></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('landing',this)">🏠 Home</button>
+    <button class="nav-tab" onclick="requireAuthThen(()=>showPage('app',this),this)">📱 Order</button>
+    <button class="nav-tab" onclick="requireAuthThen(()=>showPage('admin',this),this)" id="admin-tab" style="display:none">⚙️ Admin</button>
+  </div>
+  <div class="nav-right">
+    <span class="nav-user" id="nav-user-name" style="display:none"></span>
+    <button class="nav-cta" id="nav-login-btn" onclick="openAuthModal()">Login</button>
+    <button class="btn-secondary btn-sm" id="nav-logout-btn" style="display:none" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- ===== LANDING PAGE ===== -->
+<div class="page active" id="page-landing">
+  <section class="hero">
+    <div>
+      <div class="hero-badge">📍 Malindi, Kenya</div>
+      <h1>Fast Delivery,<br><em>Right Here</em> in Malindi</h1>
+      <p>Order food, groceries, and more from local vendors. Pay with Mpesa or cash. Delivered in minutes by trusted local riders.</p>
+      <div class="hero-btns">
+        <button class="btn-primary btn-lg" onclick="openAuthModal()">Order Now</button>
+        <button class="btn-secondary btn-lg" onclick="openAuthModal()">Become a Vendor</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="phone-mock">
+        <div class="phone-status"><span>9:41</span><span>●●● 100%</span></div>
+        <div class="phone-header">Good morning 👋</div>
+        <div class="phone-sub">Malindi Town · What are you craving?</div>
+        <div class="phone-search">🔍 Search food, shops...</div>
+        <div class="phone-cats">
+          <div class="phone-cat active-cat">🍔 Food</div>
+          <div class="phone-cat">🛒 Grocery</div>
+          <div class="phone-cat">💊 Pharmacy</div>
+        </div>
+        <div class="phone-cards">
+          <div class="phone-card"><div class="phone-card-icon">🍗</div><div class="phone-card-name">Mama Pima</div><div class="phone-card-meta">⭐ 4.8 · 15 min</div><div class="phone-card-price">From KES 200</div></div>
+          <div class="phone-card"><div class="phone-card-icon">🛒</div><div class="phone-card-name">FreshMart</div><div class="phone-card-meta">⭐ 4.6 · 20 min</div><div class="phone-card-price">Free delivery</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="stats-strip">
+    <div class="stat-item"><div class="stat-num">500+</div><div class="stat-lbl">Active Vendors</div></div>
+    <div class="stat-item"><div class="stat-num">1,200+</div><div class="stat-lbl">Daily Orders</div></div>
+    <div class="stat-item"><div class="stat-num">150+</div><div class="stat-lbl">Riders on Road</div></div>
+    <div class="stat-item"><div class="stat-num">4.8★</div><div class="stat-lbl">Avg Rating</div></div>
+  </div>
+  <section class="features">
+    <div class="section-label">Why Kwehu</div>
+    <div class="section-title">Everything you need, delivered</div>
+    <div class="features-grid">
+      <div class="feature-card"><div class="feature-icon">⚡</div><h3>Lightning Fast</h3><p>Average delivery under 30 min. Live rider tracking so you always know where your order is.</p></div>
+      <div class="feature-card"><div class="feature-icon">📱</div><h3>Pay with Mpesa</h3><p>Seamless Mpesa STK push. Enter your phone, approve on your handset — done.</p></div>
+      <div class="feature-card"><div class="feature-icon">🏪</div><h3>Local Vendors</h3><p>Support Malindi businesses — food, groceries, pharmacy and more from your neighbourhood.</p></div>
+      <div class="feature-card"><div class="feature-icon">🛵</div><h3>Trusted Riders</h3><p>All riders are KYC-verified. Rate after every delivery to keep quality high.</p></div>
+      <div class="feature-card"><div class="feature-icon">📊</div><h3>Vendor Dashboard</h3><p>Manage orders, track sales, and receive payouts — all from one portal.</p></div>
+      <div class="feature-card"><div class="feature-icon">🎁</div><h3>Deals & Promos</h3><p>Discount codes, free delivery campaigns, and vendor promos on every order.</p></div>
+    </div>
+  </section>
+  <section class="cta-section">
+    <h2>Ready to Order?</h2>
+    <p>Join customers in Malindi already using Kwehu Delivery</p>
+    <div class="cta-btns">
+      <button class="btn-white" onclick="openAuthModal()">Get Started</button>
+      <button class="btn-outline-white" onclick="openAuthModal()">Register as Vendor</button>
+
+      <div id="riderModal" class="modal" style="display:none;">
+    <div class="modal-content" style="max-width:500px;">
+
+        <h2 style="margin-bottom:20px;">🚚 Assign Rider</h2>
+
+        <div id="riderList"></div>
+
+        <div style="text-align:right;margin-top:20px;">
+            <button class="btn-secondary" onclick="closeRiderModal()">
+                Cancel
+            </button>
+        </div>
+    </div>
+    </div>
+    </div>
+  </section>
+  <footer>&copy; 2026 <strong>Kwehu Delivery</strong> · Malindi, Kenya</footer>
+</div>
+
+<!-- ===== CUSTOMER APP ===== -->
+<div class="page" id="page-app">
+  <div class="app-layout">
+    <aside class="app-sidebar">
+      <div class="sidebar-profile">
+        <div class="sidebar-avatar" id="sidebar-avatar">?</div>
+        <div class="sidebar-name" id="sidebar-name">Loading...</div>
+        <div class="sidebar-loc">📍 Malindi Town</div>
+      </div>
+      <div class="sidebar-menu">
+        <div class="menu-item active" onclick="appSection('home', this)">
+    🏠 Home
+</div>
+
+<div class="menu-item" onclick="appSection('cart', this)">
+    🛒 Cart
+</div>
+
+<div class="menu-item" onclick="appSection('orders', this)">
+    📦 My Orders
+</div>
+
+<div class="menu-item" onclick="appSection('profile', this)">
+    👤 Profile
+</div>
+      </div>
+    </aside>
+    <main class="app-main" id="app-main-content"></main>
+  </div>
+</div>
+
+<div id="page-vendor" class="page">
+
+  <div style="display:flex;min-height:100vh;">
+
+    <!-- Sidebar -->
+    <div style="
+      width:260px;
+      background:#1f2937;
+      color:white;
+      padding:25px;
+    ">
+
+      <h2 style="margin-bottom:30px;">
+        🍞 Vendor Panel
+      </h2>
+
+      <div class="menu-item"
+           onclick="renderVendorSection('dashboard')"
+           style="margin-bottom:15px;cursor:pointer;">
+        📊 Dashboard
+      </div>
+
+      <div class="menu-item"
+           onclick="renderVendorSection('orders')"
+           style="margin-bottom:15px;cursor:pointer;">
+        📦 Orders
+      </div>
+
+      <div class="menu-item"
+           onclick="renderVendorSection('products')"
+           style="margin-bottom:15px;cursor:pointer;">
+        🍔 Products
+      </div>
+
+      <div class="menu-item"
+           onclick="renderVendorSection('profile')"
+           style="cursor:pointer;">
+        👤 Profile
+      </div>
+
+    </div>
+
+    <!-- Main Content -->
+    <div
+      id="vendor-main-content"
+      style="
+        flex:1;
+        padding:30px;
+        background:#f8fafc;
+      ">
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div class="page" id="page-admin">
+
+    <div class="admin-layout">
+
+        <aside class="admin-sidebar">
+
+            <div class="admin-sidebar-logo">
+                Kwehu <span>Admin</span>
+            </div>
+            <div class="admin-menu" id="admin-menu">
+                <!-- Menu items are added here -->
+            </div>
+        </aside>
+        <main class="admin-main" id="admin-main-content">
+        </main>
+    </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/customer.js"></script>
+<script src="js/vendor.js"></script>
+<script src="js/rider.js"></script>
+<script src="js/admin.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>
+

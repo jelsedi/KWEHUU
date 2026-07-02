@@ -1,0 +1,200 @@
+/* =========================================
+   AUTH MODAL OVERLAY
+========================================= */
+
+.auth-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s ease;
+    z-index: 9999;
+}
+
+/* When modal is active */
+.auth-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* =========================================
+   AUTH CARD
+========================================= */
+
+.auth-card {
+    width: 420px;
+    background: #fff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    transform: translateY(20px);
+    transition: 0.3s ease;
+}
+
+.auth-overlay.open .auth-card {
+    transform: translateY(0);
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.auth-logo {
+    width: 70px;
+    margin-bottom: 10px;
+}
+
+.auth-header h2 {
+    font-family: sans-serif;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.auth-header p {
+    font-size: 13px;
+    color: #777;
+}
+
+/* =========================================
+   CLOSE BUTTON
+========================================= */
+
+.auth-close {
+    position: absolute;
+    margin-left: 360px;
+    margin-top: -10px;
+    background: transparent;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: #555;
+}
+
+/* =========================================
+   FORM
+========================================= */
+
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #444;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e5e5e5;
+    border-radius: 10px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #ff6b00;
+}
+
+/* =========================================
+   PASSWORD BOX
+========================================= */
+
+.password-box {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.password-box input {
+    flex: 1;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background: #ff6b00;
+    border: none;
+    color: white;
+    font-size: 15px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary:hover {
+    background: #e85f00;
+}
+
+.auth-btn {
+    margin-top: 10px;
+}
+
+/* =========================================
+   SWITCH TEXT
+========================================= */
+
+.auth-switch {
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+    color: #666;
+}
+
+.auth-switch a {
+    color: #ff6b00;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+/* =========================================
+   MESSAGE BOXES
+========================================= */
+
+#auth-msg,
+#register-msg {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.error-msg {
+    color: #d63031;
+}
+
+.success-msg {
+    color: #00b894;
+}
+
+.loader {
+    color: #555;
+}
