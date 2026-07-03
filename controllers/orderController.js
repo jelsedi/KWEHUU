@@ -77,12 +77,12 @@ exports.getCustomerOrders = asyncHandler(async (req, res) => {
 // =====================================
 exports.createOrder = asyncHandler(async (req, res) => {
 
-    const orders = await orderService.createOrder(req.body);
+    const order = await orderService.createOrder(req.body);
 
     return success(
         res,
-        { orders },
-        "Orders created successfully",
+        order,
+        "Order created successfully",
         201
     );
 

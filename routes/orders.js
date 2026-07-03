@@ -16,7 +16,7 @@ router.get("/riders/list", orderController.getAvailableRiders);
 
 router.get("/:id", orderController.getOrder);
 
-router.post("/create", orderController.createOrder);
+router.post("/", orderController.createOrder);
 
 router.put("/:id/status", orderController.updateOrderStatus);
 

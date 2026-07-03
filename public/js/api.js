@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:4001/api";
+const API_URL = `${window.location.origin}/api`;
 
 async function api(endpoint, options = {}) {
 

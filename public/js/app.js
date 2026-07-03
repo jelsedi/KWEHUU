@@ -2,52 +2,22 @@
 // KWEHU APP
 // ======================================
 
-document.addEventListener("DOMContentLoaded", initApp);
+document.addEventListener("DOMContentLoaded", () => {
 
-function initApp() {
+    currentUser = {
+        id: "1",
+        name: "Developer",
+        email: "dev@test.com",
+        role: "customer"
+    };
 
-    // Hide every page
-    document.querySelectorAll(".page").forEach(page => {
-        page.style.display = "none";
-    });
+    localStorage.setItem("kwehu_user", JSON.stringify(currentUser));
+    localStorage.setItem("kwehu_token", "dev-token");
 
-    // Check if user is already logged in
-    const savedUser =
-        JSON.parse(localStorage.getItem("kwehu_user"));
+    showPage("page-app");
+    appSection("home");
 
-    if (savedUser) {
-
-        currentUser = savedUser;
-
-    switch (savedUser.role) {
-
-    case "admin":
-        showPage("page-admin");
-        break;
-
-    case "vendor":
-        showPage("page-vendor");
-        break;
-
-    case "rider":
-        showPage("page-rider");
-        break;
-
-    default:
-        showPage("page-app");
-
-        if (typeof loadVendors === "function") {
-            loadVendors();
-        }
-
-}
-
-    } else {
-
-        showPage("page-landing");
-    }
-
-}
+});
 
 // ======================================
 // PAGE NAVIGATION
@@ -55,27 +25,29 @@ function initApp() {
 
 function showPage(pageId) {
 
-    // Hide all pages
     document.querySelectorAll(".page").forEach(page => {
+
         page.style.display = "none";
         page.classList.remove("active");
+
     });
 
-    // Show requested page
     const page = document.getElementById(pageId);
 
     if (!page) {
+
         console.error("Page not found:", pageId);
         return;
+
     }
 
     page.style.display = "block";
     page.classList.add("active");
 
-    // Close auth modal if open
     const modal = document.getElementById("auth-modal");
 
     if (modal) {
         modal.classList.remove("open");
     }
+
 }

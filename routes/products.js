@@ -34,4 +34,14 @@ router.patch(
     productController.updateProduct
 );
 
+// ======================================
+// DELETE PRODUCT
+// ======================================
+router.delete(
+    "/:id",
+    requireAuth,
+    requireRole("vendor", "admin"),
+    productController.deleteProduct
+);
+
 module.exports = router;

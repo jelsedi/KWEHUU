@@ -3,10 +3,10 @@ const asyncHandler = require("../middleware/asyncHandler");
 const ApiError = require("../utils/ApiError");
 const { success } = require("../utils/response");
 
-
-// ===============================
+// ======================================
 // GET ALL PRODUCTS
-// ===============================
+// ======================================
+
 exports.getProducts = asyncHandler(async (req, res) => {
 
     const products = await productService.getProducts(req.query);
@@ -19,13 +19,13 @@ exports.getProducts = asyncHandler(async (req, res) => {
 
 });
 
-
-// ===============================
+// ======================================
 // GET SINGLE PRODUCT
-// ===============================
+// ======================================
+
 exports.getProduct = asyncHandler(async (req, res) => {
 
-    const product = await productService.getProductById(req.params.id);
+    const product = await productService.getProduct(req.params.id);
 
     if (!product) {
         throw new ApiError(404, "Product not found");
@@ -39,9 +39,10 @@ exports.getProduct = asyncHandler(async (req, res) => {
 
 });
 
-// ===============================
+// ======================================
 // CREATE PRODUCT
-// ===============================
+// ======================================
+
 exports.createProduct = asyncHandler(async (req, res) => {
 
     const product = await productService.createProduct(req.body);
@@ -55,10 +56,10 @@ exports.createProduct = asyncHandler(async (req, res) => {
 
 });
 
-
-// ===============================
+// ======================================
 // UPDATE PRODUCT
-// ===============================
+// ======================================
+
 exports.updateProduct = asyncHandler(async (req, res) => {
 
     const product = await productService.updateProduct(
@@ -70,6 +71,22 @@ exports.updateProduct = asyncHandler(async (req, res) => {
         res,
         product,
         "Product updated successfully"
+    );
+
+});
+
+// ======================================
+// DELETE PRODUCT
+// ======================================
+
+exports.deleteProduct = asyncHandler(async (req, res) => {
+
+    await productService.deleteProduct(req.params.id);
+
+    return success(
+        res,
+        null,
+        "Product deleted successfully"
     );
 
 });

@@ -327,24 +327,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function devLogin() {
 
+    alert("NEW DEV LOGIN");
+
     authToken = "dev-token";
 
     currentUser = {
-        id: "dev-user",
-        name: "Kibet",
-        email: "kibet@test.com",
+        id: "26674002-8106-4a49-b890-3ca89e7b83f5",
+        name: "Developer",
+        email: "dev@test.com",
         role: "customer"
     };
 
     localStorage.setItem("kwehu_token", authToken);
     localStorage.setItem("kwehu_user", JSON.stringify(currentUser));
 
-    closeAuthModal();
-
-    showPage("page-app");
-    
-    if (typeof loadVendors === "function") {
-        loadVendors();
-    }
-
+    console.log(currentUser);
 }

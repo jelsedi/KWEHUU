@@ -323,9 +323,9 @@ exports.createOrder = async (payload) => {
 
         const order = await saveOrder({
 
-            customer_id: payload.customer_id,
+            customer_id: payload.user.id,
 
-            vendor_id: vendor.vendor_id,
+            vendor_id: vendor.user.id,
 
             delivery_address: payload.delivery_address,
 
